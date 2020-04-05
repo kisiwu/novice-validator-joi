@@ -1,0 +1,30 @@
+{
+  "name": "@novice1/validator-joi",
+  "private": false,
+  "version": "0.0.1",
+  "description": "Joi validator to use with @novice1/routing.",
+  "main": "index.js",
+  "keywords": [
+    "express",
+    "middleware",
+    "joi",
+    "validator"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kisiwu/novice-validator-joi.git"
+  },
+  "scripts": {
+    "test": "kaukau --config test/config/testconfig.js"
+  },
+  "author": "demingongo",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "@novice1/logger": "^1.1.1",
+    "extend": "^3.0.2"
+  },
+  "devDependencies": {
+    "kaukau": "0.0.70"
+  }
+}
