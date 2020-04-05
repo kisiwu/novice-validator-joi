@@ -3,9 +3,9 @@ const Extend = require("extend");
 const Log = require("@novice1/logger").debugger("@novice1:validator:joi");
 
 /**
- * 
+ *
  * @param {object} [options] hapi/joi options. Default: { stripUnknown: true }
- * @param {Function} [onerror] 
+ * @param {Function} [onerror]
  */
 function validatorJoi(options, onerror) {
   options = options || { stripUnknown: true };
@@ -41,21 +41,26 @@ function validatorJoi(options, onerror) {
 
     return schema.validateAsync(toValidate, options).then(
       (validated) => {
+        Log.info("Valid request for %s", req.pathname);
         Extend(req, validated);
         next();
       },
       (err) => {
+        Log.info("Invalid request for %s", req.pathname);
         if (onerror) {
-          if(typeof onerror === "function") {
+          if (typeof onerror === "function") {
             return onerror(err, req, res, next);
           } else {
-            Log.warn(`Expected arg 2 ("onerror") to be a "function". Instead got type "%s"`, typeof onerror);
+            Log.warn(
+              `Expected arg 2 ("onerror") to be a "function". Instead got type "%s"`,
+              typeof onerror
+            );
           }
         }
         return res.status(400).json(err);
       }
     );
   };
-};
+}
 
 module.exports = validatorJoi;
