@@ -2,6 +2,8 @@ const Joi = require("@hapi/joi");
 const Extend = require("extend");
 const Log = require("@novice1/logger").debugger("@novice1:validator:joi");
 
+const PARAMETERS_PROPS = ["params", "body", "files", "query"];
+
 /**
  *
  * @param {object} [options] hapi/joi options. Default: { stripUnknown: true }
@@ -20,9 +22,22 @@ function validatorJoi(options, onerror) {
       typeof req.meta.parameters === "object"
     ) {
       schema = req.meta.parameters;
+      // if it is not a Joi object
       if (typeof schema.validate !== "function") {
-        schema = Joi.object(schema);
+        var tmpSchema = {};
+        PARAMETERS_PROPS.forEach(
+          p => {
+            if(schema[p] && typeof schema[p] === "object") {
+              tmpSchema[p] = schema[p];
+            }
+          }
+        );
+        schema = tmpSchema;
+        if(Object.keys(schema).length){
+          schema = Joi.object(schema);
+        }
       }
+      // if still not a Joi object
       if (schema.type !== "object") {
         schema = null;
       }
@@ -33,7 +48,7 @@ function validatorJoi(options, onerror) {
       return next();
     }
 
-    ["params", "body", "files", "query"].forEach(function (key) {
+    PARAMETERS_PROPS.forEach(function (key) {
       if (schema.$_terms.keys.find((k) => k.key === key)) {
         toValidate[key] = req[key];
       }
@@ -41,12 +56,12 @@ function validatorJoi(options, onerror) {
 
     return schema.validateAsync(toValidate, options).then(
       (validated) => {
-        Log.info("Valid request for %s", req.pathname);
+        Log.info("Valid request for %s", req.originalUrl);
         Extend(req, validated);
         next();
       },
       (err) => {
-        Log.info("Invalid request for %s", req.pathname);
+        Log.info("Invalid request for %s", req.originalUrl);
         if (onerror) {
           if (typeof onerror === "function") {
             return onerror(err, req, res, next);
