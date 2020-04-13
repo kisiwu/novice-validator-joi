@@ -54,6 +54,8 @@ function validatorJoi(options, onerror) {
       }
     });
 
+    Log.info('validating %O', toValidate)
+
     return schema.validateAsync(toValidate, options).then(
       (validated) => {
         Log.info("Valid request for %s", req.originalUrl);
@@ -61,9 +63,14 @@ function validatorJoi(options, onerror) {
         next();
       },
       (err) => {
-        Log.info("Invalid request for %s", req.originalUrl);
+        Log.error("Invalid request for %s", req.originalUrl);
+        if(typeof req.meta.parameters.onerror === "function") {
+          Log.error("Custom function onerror => %s", req.meta.parameters.onerror.name);
+          return req.meta.parameters.onerror(err, req, res, next);
+        }
         if (onerror) {
           if (typeof onerror === "function") {
+            Log.error("Custom function onerror => %s", onerror.name);
             return onerror(err, req, res, next);
           } else {
             Log.warn(
