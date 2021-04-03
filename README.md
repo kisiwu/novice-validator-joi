@@ -1,6 +1,8 @@
 # @novice1/validator-joi
 
-Joi validator to use with [@novice1/routing](https://www.npmjs.com/package/@novice1/routing).
+[joi](https://www.npmjs.com/package/joi) validator to use with [@novice1/routing](https://www.npmjs.com/package/@novice1/routing).
+
+It provides a middleware that can validate the properties `params`, `body`, `query` and `files` from the request using [joi](https://www.npmjs.com/package/joi) validation.
 
 ## Installation
 
@@ -12,7 +14,7 @@ Example:
 
 ```js
 var router = require('@novice1/routing')()
-var joi = require('@hapi/joi')
+var joi = require('joi')
 var validatorJoi = require('@novice1/validator-joi')
 
 
@@ -44,3 +46,8 @@ router.get({
   res.json(req.query.version)
 })
 ```
+
+## References
+
+- [joi](https://www.npmjs.com/package/joi)
+- [@novice1/routing](https://www.npmjs.com/package/@novice1/routing)
