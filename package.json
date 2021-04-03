@@ -1,7 +1,7 @@
 {
   "name": "@novice1/validator-joi",
   "private": false,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Joi validator to use with @novice1/routing.",
   "main": "index.js",
   "keywords": [
@@ -17,8 +17,8 @@
   "author": "demingongo",
   "license": "MIT",
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
-    "@novice1/logger": "^1.1.2",
-    "extend": "^3.0.2"
+    "@novice1/logger": "^1.2.4",
+    "extend": "^3.0.2",
+    "joi": "^17.4.0"
   }
 }
