@@ -25,7 +25,7 @@ var validatorJoi = require('@novice1/validator-joi')
  */
 router.setValidators(
   validatorJoi(
-    // @hapi/joi options
+    // joi options
     { stripUnknown: true },
     // middleware in case validation fails
     function onerror(err, req, res, next) {
