@@ -2,7 +2,7 @@ const Joi = require('joi');
 const Extend = require('extend');
 const Log = require('@novice1/logger').debugger('@novice1/validator-joi');
 
-const PARAMETERS_PROPS = ['params', 'body', 'files', 'query'];
+const PARAMETERS_PROPS = ['params', 'body', 'query', 'headers', 'cookies', 'files'];
 
 /**
  *

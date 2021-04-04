@@ -2,7 +2,7 @@
 
 [joi](https://www.npmjs.com/package/joi) validator to use with [@novice1/routing](https://www.npmjs.com/package/@novice1/routing).
 
-It provides a middleware that can validate the properties `params`, `body`, `query` and `files` from the request using [joi](https://www.npmjs.com/package/joi) validation.
+It provides a middleware that can validate the properties `params`, `body`, `query`, `headers`, `cookies` and `files` from the request using [joi](https://www.npmjs.com/package/joi) validation.
 
 ## Installation
 
@@ -19,7 +19,7 @@ var validatorJoi = require('@novice1/validator-joi')
 
 
 /**
- * It will validate the  properties "params", "body", "query" and "files"
+ * It will validate the  properties "params", "body", "query", "headers", "cookies" and "files"
  * from the request with the route parameters.
  * 
  */
