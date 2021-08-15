@@ -1,8 +1,10 @@
+.github
 src
 /test
-types
+/types
 typedoc.json
 private
+kaukau-*.js
 
 # Logs
 logs
