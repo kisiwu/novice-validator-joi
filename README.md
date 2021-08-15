@@ -13,9 +13,9 @@ $ npm install @novice1/validator-joi
 Example:
 
 ```js
-var router = require('@novice1/routing')()
-var joi = require('joi')
-var validatorJoi = require('@novice1/validator-joi')
+const router = require('@novice1/routing')();
+const joi = require('joi');
+const validatorJoi = require('@novice1/validator-joi');
 
 
 /**
