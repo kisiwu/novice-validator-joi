@@ -1,7 +1,7 @@
 {
   "name": "@novice1/validator-joi",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Joi validator to use with @novice1/routing.",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "joi",
     "validator"
   ],
+  "homepage": "https://kisiwu.github.io/novice-validator-joi/latest/",
   "repository": {
     "type": "git",
     "url": "https://github.com/kisiwu/novice-validator-joi.git"
@@ -24,25 +25,25 @@
   "author": "demingongo",
   "license": "MIT",
   "dependencies": {
-    "@novice1/logger": "^1.3.1",
+    "@novice1/logger": "^1.3.3",
     "extend": "^3.0.2",
-    "joi": "^17.6.0",
-    "tslib": "^2.4.0"
+    "joi": "^17.9.2",
+    "tslib": "^2.6.1"
   },
   "devDependencies": {
-    "@novice1/routing": "^1.1.3",
-    "@types/chai": "^4.3.1",
-    "@types/express": "^4.17.13",
+    "@novice1/routing": "^1.1.4",
+    "@types/chai": "^4.3.5",
+    "@types/express": "^4.17.17",
     "@types/extend": "^3.0.1",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "^17.0.42",
-    "@typescript-eslint/eslint-plugin": "^5.27.1",
-    "@typescript-eslint/parser": "^5.27.1",
-    "eslint": "^8.17.0",
-    "express": "^4.18.1",
-    "kaukau": "^2.0.2",
-    "ts-node": "^10.8.1",
-    "typedoc": "^0.22.17",
-    "typescript": "^4.7.3"
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "eslint": "^8.47.0",
+    "express": "^4.18.2",
+    "kaukau": "^3.0.0",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.24.8",
+    "typescript": "^5.1.6"
   }
 }
