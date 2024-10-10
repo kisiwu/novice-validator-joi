@@ -1,7 +1,7 @@
 {
   "name": "@novice1/validator-joi",
   "private": false,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Joi validator to use with @novice1/routing.",
   "main": "index.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "tslib": "^2.7.0"
   },
   "devDependencies": {
-    "@novice1/routing": "^1.1.6",
+    "@novice1/routing": "^1.1.7",
     "@types/chai": "^4.3.19",
     "@types/express": "^4.17.21",
     "@types/extend": "^3.0.4",
