@@ -16,12 +16,18 @@ describe('Set validator', () => {
     });
 
   it('should have registered \'post\' route with the validator middleware', function() {
-    expect(router.stack[0].route.path).to.equal('/post');
+    expect(router.stack[0].route?.path).to.equal('/post');
 
-    expect(router.stack[0].route.stack[1].type)
+    let type: string = ''
+    const layer: unknown = router.stack[0].route?.stack[1]
+    if (layer && typeof layer === 'object' && 'type' in layer && typeof layer.type === 'string') {
+      type = layer.type
+    }
+
+    expect(type)
       .to.eql('validator');
 
-    expect(router.stack[0].route.stack[1].name)
+    expect(router.stack[0].route?.stack[1].name)
       .to.eql('validatorJoiRequestHandler');
   });
 });
