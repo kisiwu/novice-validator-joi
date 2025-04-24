@@ -7,21 +7,38 @@ It provides a middleware that can validate the properties `params`, `body`, `que
 ## Installation
 
 ```bash
-$ npm install @novice1/validator-joi
+npm install @novice1/validator-joi
 ```
+
+### Typescript
+
+Add `node_modules/@novice1/validator-joi` in your `compilerOptions.typeRoots` of your `tsconfig` file.
+
+```json
+{
+  "compilerOptions": {
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/@novice1/validator-joi"
+    ]
+  }
+}
+```
+
+## Usage
 
 Example:
 
 ```js
-const router = require('@novice1/routing')();
-const joi = require('joi');
-const validatorJoi = require('@novice1/validator-joi');
-
+const router = require('@novice1/routing')()
+const joi = require('joi')
+const validatorJoi = require('@novice1/validator-joi')
+const express = require('express')
 
 /**
  * It will validate the  properties "params", "body", "query", "headers", "cookies" and "files"
  * from the request with the route parameters.
- * 
+ *
  */
 router.setValidators(
   validatorJoi(
@@ -29,22 +46,47 @@ router.setValidators(
     { stripUnknown: true },
     // middleware in case validation fails
     function onerror(err, req, res, next) {
-      res.status(400).json(err);
+      res.status(400).json(err)
     }
   )
 )
 
-router.get({
-  name: 'Main app',
-  path: '/app',
-  parameters: {
-    query: {
-      version: joi.number()
-    }
+router.post(
+  {
+    name: 'Post app',
+    path: '/app',
+
+    parameters: {
+      body: joi.object({
+        name: joi.string().required()
+      }).required()
+    },
+    // body parser
+    preValidators: express.json()
+  },
+  function (req, res) {
+    res.json(req.body.name)
   }
-}, function (req, res) {
-  res.json(req.query.version)
-})
+)
+
+/**
+ * Since express@5 and @novice1/routing@2, req.query is readonly. 
+ * The parsed validated result can be found by calling the function 'req.validated()'.
+ */
+router.get(
+  {
+    name: 'Main app',
+    path: '/app',
+    parameters: {
+      query: {
+        version: joi.number()
+      }
+    }
+  },
+  function (req, res) {
+    res.json(req.validated?.().query?.version)
+  }
+)
 ```
 
 ## References
