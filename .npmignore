@@ -2,7 +2,7 @@
 src
 docs
 /test
-/types
+/types/files.d.ts
 typedoc.json
 private
 kaukau-*.js
