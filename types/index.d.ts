@@ -5,12 +5,12 @@ declare global {
     interface Request {
 
       validated?<Q = Record<string, unknown>, P = unknown, B = unknown, H = unknown, C = unknown, F = unknown>(): {
-        params: P | undefined
-        query: Q | undefined
-        body: B | undefined
-        headers: H | undefined
-        cookies: C | undefined
-        files: F | undefined
+        query?: Q
+        params?: P
+        body?: B
+        headers?: H
+        cookies?: C
+        files?: F
         [x: string]: unknown
       }
     }
