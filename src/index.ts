@@ -147,7 +147,13 @@ function validatorJoi(
       return schema.validateAsync?.(value, options).then(
         (validated) => {
           Log.info('Valid request for %s', req.originalUrl);
-          Extend(req, validated);
+
+          // because 'query' is readonly since Express v5
+          const { query, ...validatedProps } = validated
+          Log.debug('Validated query %o', query);
+          req.validated = () => validated
+
+          Extend(req, validatedProps);
           next();
         },
         (err) => {
