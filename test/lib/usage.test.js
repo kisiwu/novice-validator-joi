@@ -2,7 +2,7 @@ const validatorJoi = require('../../index');
 const routing = require('@novice1/routing');
 const { expect } = require('chai');
 
-describe('Set validator', () => {
+describe('Set validator', function() {
 
   const router = routing()
     .setValidators(validatorJoi({stripUnknown: true}))
