@@ -10,21 +10,6 @@ It provides a middleware that can validate `req.params`, `req.body`, `req.query`
 npm install @novice1/validator-joi
 ```
 
-### Typescript
-
-Add `node_modules/@novice1/validator-joi` in your `compilerOptions.typeRoots` of your `tsconfig` file.
-
-```json
-{
-  "compilerOptions": {
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/@novice1/validator-joi"
-    ]
-  }
-}
-```
-
 ## Usage
 
 Example:
@@ -88,6 +73,26 @@ router.get(
   }
 )
 ```
+
+### Typescript
+
+```ts
+router.get(
+  {
+    name: 'Main app',
+    path: '/app',
+    parameters: {
+      query: {
+        version: joi.number()
+      }
+    }
+  },
+  function (req, res) {
+    res.json(req.validated?.<{ version?: number }>().query?.version)
+  }
+)
+```
+
 
 ## References
 
