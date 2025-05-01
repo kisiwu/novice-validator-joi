@@ -1,4 +1,4 @@
-export {};
+import routing from "@novice1/routing";
 
 declare global {
   namespace Express {
@@ -13,6 +13,12 @@ declare global {
         files?: F
         [x: string]: unknown
       }
+    }
+  }
+
+  namespace NoviceRouting {
+    interface MetaParameters {
+        onerror?: routing.ErrorRequestHandler
     }
   }
 }

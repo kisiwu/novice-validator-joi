@@ -6,20 +6,16 @@ import { dirname } from 'node:path'
 async function buildDT() {
     Logger.info('scripts/buildDT')
 
-    const sourceFilePath = `${dirname(fileURLToPath(import.meta.url))}/../types/index.d.ts`
     const destFilePath = `${dirname(fileURLToPath(import.meta.url))}/../index.d.ts`
 
-    Logger.info(`source = ${sourceFilePath}`)
     Logger.info(`destination = ${destFilePath}`)
 
-    const content = await fs.promises.readFile(sourceFilePath, { encoding: 'utf-8' })
+    let content = await fs.promises.readFile(destFilePath, { encoding: 'utf-8' })
 
-    // remove "export {" line
-    const parsedContent = content.replace(/^.*export \{.*$/mg, '');
+    content = `import './types/overrides.d.ts'
+` + content
 
-    Logger.warn(parsedContent)
-
-    await fs.promises.appendFile(destFilePath, parsedContent, { encoding: 'utf-8' })
+    await fs.promises.writeFile(destFilePath, content, { encoding: 'utf-8' })
 
     Logger.info('Done')
 }
