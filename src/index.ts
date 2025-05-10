@@ -64,7 +64,17 @@ function retrieveParametersValue(parameters?: Record<string, unknown>, property?
     schemaFromParameters = parameters;
 
     if (property && typeof property === 'string') {
-      const subParameters = schemaFromParameters?.[property];
+      // retrieve nested object property
+      const subParameters = property.replace(/\[([^[\]]*)\]/g, '.$1.')
+        .split('.')
+        .filter((t) => t !== '')
+        .reduce((prev: unknown, curr) => {
+          if (prev && typeof prev === 'object' && curr in prev) {
+            const tmp: unknown = prev[curr as keyof typeof prev]
+            return tmp
+          }
+          return
+        }, schemaFromParameters);
       if (
         subParameters &&
         typeof subParameters === 'object' &&
@@ -115,22 +125,15 @@ function buildValueToValidate(schema: JoiSchema, req: Request): ValidationObject
 }
 
 
-/**
- * 
- * @param options 
- * @param onerror 
- * @param validationProperty 
- * @returns 
- */
 function validatorJoi(
   options?: Joi.AsyncValidationOptions,
   onerror?: ErrorRequestHandler,
-  validationProperty?: string): RequestHandler {
+  schemaProperty?: string): RequestHandler {
   options = options || { stripUnknown: true };
 
   return function validatorJoiRequestHandler(req, res, next) {
     // retrieve schema
-    const schema = retrieveSchema(req.meta?.parameters, validationProperty);
+    const schema = retrieveSchema(req.meta?.parameters, schemaProperty);
 
     // no schema to validate
     if (!schema) {
