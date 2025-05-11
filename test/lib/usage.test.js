@@ -1,4 +1,4 @@
-const validatorJoi = require('../../index');
+const { validatorJoi } = require('../../index');
 const routing = require('@novice1/routing');
 const { expect } = require('chai');
 

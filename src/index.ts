@@ -1,4 +1,4 @@
-import Joi, { isSchema } from 'joi';
+import Joi, { AnySchema, isSchema } from 'joi';
 import Extend from 'extend';
 import Logger from '@novice1/logger';
 import { ErrorRequestHandler, RequestHandler, Request } from '@novice1/routing';
@@ -124,8 +124,16 @@ function buildValueToValidate(schema: JoiSchema, req: Request): ValidationObject
   return r;
 }
 
+export type ValidatorJoiSchema = AnySchema | {
+    body?: AnySchema | { [x: string]: AnySchema }
+    headers?: AnySchema | { [x: string]: AnySchema }
+    cookies?: AnySchema | { [x: string]: AnySchema }
+    params?: AnySchema | { [x: string]: AnySchema }
+    query?: AnySchema | { [x: string]: AnySchema }
+    files?: AnySchema | { [x: string]: AnySchema }
+}
 
-function validatorJoi(
+export function validatorJoi(
   options?: Joi.AsyncValidationOptions,
   onerror?: ErrorRequestHandler,
   schemaProperty?: string): RequestHandler {
@@ -186,4 +194,4 @@ function validatorJoi(
   };
 }
 
-export = validatorJoi;
+export default validatorJoi;

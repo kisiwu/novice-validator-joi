@@ -12,51 +12,115 @@ npm install @novice1/validator-joi
 
 ## Usage
 
-Example:
+### Set validator
 
-```js
-const router = require('@novice1/routing')()
-const joi = require('joi')
-const validatorJoi = require('@novice1/validator-joi')
-const express = require('express')
+```ts
+// router.ts
 
-/**
- * It will validate the  properties "params", "body", "query", "headers", "cookies" and "files"
- * from the request with the route parameters.
- *
- */
+import routing from '@novice1/routing'
+import { validatorJoi } from '@novice1/validator-joi'
+
+export default const router = routing()
+
 router.setValidators(
   validatorJoi(
-    // joi options
+    // Joi.AsyncValidationOptions
     { stripUnknown: true },
     // middleware in case validation fails
     function onerror(err, req, res, next) {
       res.status(400).json(err)
     }
+    // name of the property containing the schema
+    'schema'
   )
 )
+```
+
+### Create schema 
+
+```ts
+// schema.ts
+
+import Joi from 'joi'
+import { ValidatorJoiSchema } from '@novice1/validator-joi'
+import router from './router'
+
+// schema for "req.body"
+const bodySchema = Joi.object({
+  name: Joi.string().required()
+}).required()
+
+export const routeSchema: ValidatorJoiSchema = Joi.object().keys({
+    body: bodySchema
+})
+
+// or
+/*
+export const routeSchema: ValidatorJoiSchema = {
+    body: bodySchema
+}
+*/
+
+// or
+/*
+export const routeSchema: ValidatorJoiSchema = {
+    body: {                
+       name: Joi.string().required()
+    }
+}
+*/
+```
+
+### Create route
+
+```ts
+import routing from '@novice1/routing'
+import express from 'express'
+import router from './router'
+import { routeSchema } from './schema'
 
 router.post(
   {
-    name: 'Post app',
-    path: '/app',
+    name: 'Post item',
+    path: '/items',
 
     parameters: {
-      body: joi.object({
-        name: joi.string().required()
-      }).required()
+        // the schema to validate
+        schema: routeSchema
     },
+
     // body parser
     preValidators: express.json()
   },
-  function (req, res) {
-    res.json(req.body.name)
+  function (req: routing.Request<unknown, { name: string }, { name: string }>, res) {
+    res.json({ name: req.body.name })
   }
 )
+```
 
+### Transformations
+
+Data can be transformed with methods like `Joi.string().trim()` and more. 
+
+`req.query` being readonly, its tranformed values can be
+retrieved from `req.validated().query`. 
+
+For `req.params`, `req.body`, `req.headers`, `req.cookies` and `req.files`, the tranformation is applied on them and `req.validated()` can still be used if you prefer.
+
+|               | raw data    | transformed                                 |
+|---------------|-------------|---------------------------------------------|
+| **params**    |             | `req.params` or `req.validated().params`    |
+| **query**     | `req.query` | `req.validated().query`                     |
+| **body**      |             | `req.body` or `req.validated().body`        |
+| **headers**   |             | `req.headers` or `req.validated().headers`  |
+| **cookies**   |             | `req.cookies` or `req.validated().cookies`  |
+| **files**     |             | `req.files` or `req.validated().files`      |
+
+
+```ts
 /**
  * Since express@5 and @novice1/routing@2, req.query is readonly. 
- * The parsed validated result can be found by calling the function 'req.validated()'.
+ * The parsed and validated result can be found by calling the function 'req.validated()'.
  */
 router.get(
   {
@@ -64,26 +128,7 @@ router.get(
     path: '/app',
     parameters: {
       query: {
-        version: joi.number()
-      }
-    }
-  },
-  function (req, res) {
-    res.json(req.validated?.().query?.version)
-  }
-)
-```
-
-### Typescript
-
-```ts
-router.get(
-  {
-    name: 'Main app',
-    path: '/app',
-    parameters: {
-      query: {
-        version: joi.number()
+        version: Joi.number()
       }
     }
   },
@@ -93,6 +138,32 @@ router.get(
 )
 ```
 
+### Overrides
+
+Override the error handler for a route.
+
+```ts
+import routing from '@novice1/routing'
+import router from './router'
+
+const onerror: routing.ErrorRequestHandler = (err, req, res) => {
+  res.status(400).json(err)
+}
+
+router.get(
+  {
+    path: '/override',
+    parameters: {
+      // overrides
+      onerror
+
+    },
+  },
+  function (req, res) {
+    // ...
+  }
+)
+```
 
 ## References
 
